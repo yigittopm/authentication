@@ -11,6 +11,8 @@ const createUser = async (req, res) => {
         .then(result => res.redirect("/login").status(200))
         .catch(err => res.send(err).status(404));
     
+    console.log("CREATE")
+    
 }
 
 const getRegister = async (req,res) => {
