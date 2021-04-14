@@ -1,15 +1,16 @@
 const User = require("../models/User");
+const path = require("path");
 
 const loginUser = async (req, res) => {
     const {username, password} = req.body;
     const user = await User.findOne({username, password});
 
     if(user){
-        res.status(200).redirect("/dashboard")
+        res.status(200).render(path.join(__dirname,  "../" + "./client" + "/src" + "/components" + "/pages"+ "/Dashboard.jsx"))
         // Profile yönlendir
     }else{
-        res.status(401).redirect("/login");
-        console.log("NOT USER OR PASSWORD")
+        res.status(401)
+        res.sendFile(path.join(__dirname,  "../" + "./client" + "/src" + "/components" + "/pages"+ "/LoginPage.jsx"))
         // Login sayfasında kal
     }
 }

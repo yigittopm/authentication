@@ -1,8 +1,7 @@
 const User = require("../models/User");
 
 const getProfile = async (req,res) => {
-    res.render("dashboard")
-    res.send("DASHBOARD")
+    res.sendFile("./client/src/components/pages")
 }
 
 module.exports = {

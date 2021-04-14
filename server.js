@@ -8,6 +8,9 @@ const PORT = process.env.PORT || 5000;
 
 database();
 
+app.set('views', __dirname + './client/src/components/pages');
+app.set('view engine', 'jsx');
+
 app.use(cors());
 app.use(express.json())
 app.use("/", rootRoutes);
