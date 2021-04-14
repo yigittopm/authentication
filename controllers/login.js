@@ -5,10 +5,11 @@ const loginUser = async (req, res) => {
     const user = await User.findOne({username, password});
 
     if(user){
-        res.status(200).redirect("/dashboard");
+        res.status(200).redirect("/dashboard")
         // Profile yönlendir
     }else{
         res.status(401).redirect("/login");
+        console.log("NOT USER OR PASSWORD")
         // Login sayfasında kal
     }
 }
