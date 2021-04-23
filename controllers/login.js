@@ -6,7 +6,7 @@ const loginUser = async (req, res) => {
     const user = await User.findOne({username, password});
 
     if(user){
-        res.status(200).render(path.join(__dirname,  "../" + "./client" + "/src" + "/components" + "/pages"+ "/Dashboard.jsx"))
+        res.status(200).send("OK")
         // Profile yönlendir
     }else{
         res.status(401)

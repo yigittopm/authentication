@@ -1,9 +1,9 @@
 import "./components/styles/App.css";
-import Navbar from "./components/Navbar.jsx";
-import LoginPage from "./components/pages/LoginPage.jsx";
-import RegisterPage from "./components/pages/RegisterPage.jsx";
-import Dashboard from "./components/pages/Dashboard.jsx";
-import Home from "./components/pages/Home.jsx";
+import Navbar from "./components/Navbar";
+import LoginPage from "./components/LoginPage.js";
+import RegisterPage from "./components/RegisterPage.js";
+import Dashboard from "./components/Dashboard.js";
+import Home from "./components/Home.js";
 
 import { BrowserRouter, Switch, Route } from "react-router-dom";
 
