@@ -23,26 +23,23 @@ const userSchema = new mongoose.Schema({
     password : {
         type: String,
         required: [true, "Please add a password"],
-        trim: true,
-        min: (6),
+        minlength: 6,
         select: false
-    },
-    date : {
-        type: Date,
-        default: Date.now()
     },
     resetPasswordToken: String,
     resetPasswordExpire: Date
 })
 
 userSchema.pre('save', async function(next){
-    if(!this.isModified('password')){
+
+    if(!this.isModified("password")){
         next();
     }
 
     const salt = await  bcrypt.genSalt(10);
-    this.password = bcrypt.hash(this.password, salt);
+    this.password = await bcrypt.hash(this.password, salt);
     next();
+
 })
 
 userSchema.methods.matchPassword = async function(password){
