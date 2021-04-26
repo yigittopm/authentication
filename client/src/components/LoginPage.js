@@ -1,23 +1,48 @@
-//import { useDispatch, useSelector} from "react-redux";
-import { useState} from "react";
+import { useState, useEffect} from "react";
 import axios from "axios";
 
-function LoginPage() {
+const LoginPage= ({ history }) => {
   
-  const [username,setUsername] = useState("");
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
+
+  useEffect(() => {
+    if (localStorage.getItem("authToken")) {
+      history.push("/");
+    }
+  }, [history]);
   
-  const submitHandler = (e) => {
+  const submitHandler = async (e) => {
     e.preventDefault();
 
+    const config = {
+      header: {
+        "Content-Type": "application/json",
+      },
+    };
+
     const user = {
-      username,
+      email,
       password
     }
 
-    axios.post("http://localhost:5000/login", user)
-      .then(result => console.log(result.data))
-      .catch(err => console.log(err));
+    try {
+      const { data } = await axios.post(
+        "/login",
+        user,
+        config
+      );
+
+      localStorage.setItem("authToken", data.token);
+
+      history.push("/");
+    } catch (error) {
+      setError(error.response.data.error);
+      setTimeout(() => {
+        setError("");
+      }, 5000);
+    }
   }
  
   return (
@@ -25,8 +50,8 @@ function LoginPage() {
       <h2>Login</h2>
       <div className="form">
         <div className="form-group">
-          <label for="username">Username</label>
-          <input onChange={(e) => setUsername(e.target.value)} type="text" name="username" placeholder="Enter username" />
+          <label for="email">Email</label>
+          <input onChange={(e) => setEmail(e.target.value)} type="email" name="email" placeholder="Enter email" />
         </div>
         <div className="form-group">
           <label for="password">Password</label>

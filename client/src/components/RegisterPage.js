@@ -1,14 +1,22 @@
-import { useState, useEffect} from "react";
+import { useState} from "react";
+import "react-router-dom"
 import axios from "axios";
 
-function RegisterPage() {
+const RegisterPage = ({ history }) => {
 
   const [username,setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
 
-  const submitHandler = (e) => {
+  const submitHandler = async (e) => {
     e.preventDefault();
+
+    const config = {
+      header: {
+        "Content-Type": "application/json",
+      },
+    };
 
     const user = {
       username,
@@ -16,9 +24,22 @@ function RegisterPage() {
       password
     }
 
-    axios.post("http://localhost:5000/register", user)
-      .then(result => console.log(result))
-      .catch(err => console.log(err));
+    try {
+      const { data } = await axios.post(
+        "/register",
+        user,
+        config
+      );
+
+      localStorage.setItem("authToken", data.token);
+
+      history.push("/");
+    } catch (error) {
+      setError(error.response.data.error);
+      setTimeout(() => {
+        setError("");
+      }, 5000);
+    }
   }
 
   return (

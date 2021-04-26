@@ -1,7 +1,7 @@
 const User = require("../models/User");
 const ErrorResponse = require("../utils/errorResponse");
 
-const loginUser = async (req, res) => {
+const loginUser = async (req, res, next) => {
     const {email, password} = req.body;
     
     if(!email || !password){
@@ -27,6 +27,11 @@ const loginUser = async (req, res) => {
         next(error);
     }
     
+}
+
+const sendToken = (user, statusCode, res) => {
+    const token = user.getSignedJwtToken();
+    res.status(statusCode).json({success: true, token})
 }
 
 module.exports = {

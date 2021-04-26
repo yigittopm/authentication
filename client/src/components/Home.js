@@ -6,8 +6,6 @@ function Home(){
             <Link className="btn btn-light" to="/login">LOGIN</Link>
             <hr/>
             <Link className="btn btn-light" to="/register">REGISTER</Link>
-            <hr/>
-            <Link className="btn btn-light" to="/dashboard">DASHBOARD</Link>
         </div>
     )
 }

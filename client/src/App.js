@@ -21,9 +21,7 @@ function App() {
             <RegisterPage/>
           </Route>
 
-          <Route exact path="/dashboard">
-            <Dashboard/>
-          </Route>
+          <Route exact path="/private" component={Dashboard}/>
 
           <Route exact path="/">
             <Home/>

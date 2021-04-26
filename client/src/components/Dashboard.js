@@ -1,27 +1,35 @@
-import { useDispatch, useSelector} from "react-redux";
 import { useState, useEffect } from "react";
 import axios from "axios";
 
-function Dashboard(){
+const Dashboard = () => {
+  const [error, setError] = useState("");
+  const [privateData, setPrivateData] = useState("");
 
-    const [users, setUsers] = useState([]);
+  useEffect(() => {
+    const fetchPrivateDate = async () => {
+      const config = {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("authToken")}`,
+        },
+      };
 
-    useEffect(() => {
-        axios.get("http://localhost:5000/register")
-            .then(result => setUsers(result.data));
-    },[])
+      try {
+        const { data } = await axios.get("/private", config);
+        setPrivateData(data.data);
+      } catch (error) {
+        localStorage.removeItem("authToken");
+        setError("You are not authorized please login");
+      }
+    };
 
-    return(
-        <div className="container">
-            <ul className="list">
-                {users.map(user => 
-                    <li key={user._id}>
-                        {user.username}
-                    </li>
-                )}
-            </ul>
-        </div>
-    )
-}
+    fetchPrivateDate();
+  }, []);
+  return error ? (
+    <span className="error-message">{error}</span>
+  ) : (
+    <div>{privateData}</div>
+  );
+};
 
 export default Dashboard;
