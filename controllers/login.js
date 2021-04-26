@@ -1,25 +1,34 @@
 const User = require("../models/User");
-const path = require("path");
+const ErrorResponse = require("../utils/errorResponse");
 
 const loginUser = async (req, res) => {
     const {username, password} = req.body;
-    const user = await User.findOne({username, password});
-
-    if(user){
-        res.status(200).send("OK")
-        // Profile yönlendir
-    }else{
-        res.status(401)
-        res.sendFile(path.join(__dirname,  "../" + "./client" + "/src" + "/components" + "/pages"+ "/LoginPage.jsx"))
-        // Login sayfasında kal
+    
+    if(!email || !password){
+        return next(new ErrorResponse("Please provide an email and password", 400));
     }
-}
 
-const getLogin = (req,res) => {
-    res.send("GET LOGIN")
+    try {
+        const user = await User.findOne({username}).select("+password");
+
+        if(!user){
+            return next(new ErrorResponse("Invalid email", 401));
+        }
+
+        const isMatch = await user.matchPassword(password);
+
+        if(!isMatch){
+            return next(new ErrorResponse("Invalid credentials", 401));
+        }
+
+        sendToken(user, 200, res);
+
+    } catch (error) {
+        next(error);
+    }
+    
 }
 
 module.exports = {
-    loginUser,
-    getLogin
+    loginUser
 }

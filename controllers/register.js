@@ -1,28 +1,26 @@
 const User = require("../models/User");
+const ErrorResponse = require("../utils/errorResponse");
 
-const createUser = async (req, res) => {
-    const { username, email, password } = req.body;
-
-    const user = await User.create({
-        username,
-        email,
-        password
-    })
-        .then(result => res.redirect("/login").status(200))
-        .catch(err => res.send(err).status(404));
-    
-    console.log("CREATE")
-    
+//
+const sendToken = (user, statusCode, res) => {
+    const token = user.getSignedJwtToken();
+    res.status(statusCode).json({ success: true, token});
 }
 
-const getRegister = async (req,res) => {
-    const users = await User.find()
-        .then(result => res.send(result).status(200))
-        .catch(err => res.send(err).status(404));
-    res.send(users)
+const createUser = async (req, res, next) => {
+    const { username, email, password } = req.body;
+    
+    try {
+        const user = await User.create({
+            username, email, password
+        })
+        
+        sendToken(user, 200, res);
+    } catch (error) {
+        next(error);
+    }
 }
 
 module.exports = {
-    createUser,
-    getRegister
+    createUser
 }
