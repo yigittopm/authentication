@@ -38,7 +38,7 @@ const LoginPage= ({ history }) => {
 
       history.push("/");
     } catch (error) {
-      setError(error.response.data.error);
+      setError(error);
       setTimeout(() => {
         setError("");
       }, 5000);

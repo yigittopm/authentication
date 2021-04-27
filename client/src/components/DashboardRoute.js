@@ -14,3 +14,5 @@ const DashboardRoute = ({component: Component, ...rest}) => {
         />
     )
 }
+
+export default DashboardRoute;

@@ -2,6 +2,7 @@ import "./components/styles/App.css";
 import Navbar from "./components/Navbar";
 import LoginPage from "./components/LoginPage.js";
 import RegisterPage from "./components/RegisterPage.js";
+import DashboardRoute from "./components/DashboardRoute.js";
 import Dashboard from "./components/Dashboard.js";
 import Home from "./components/Home.js";
 
@@ -13,6 +14,9 @@ function App() {
       <div className="container-fuild m-0 p-0">
         <Navbar />
         <Switch>
+
+          <DashboardRoute exact path="/" component={Dashboard}/>
+
           <Route exact path="/login">
             <LoginPage />
           </Route>
@@ -20,8 +24,6 @@ function App() {
           <Route exact path="/register">
             <RegisterPage/>
           </Route>
-
-          <Route exact path="/private" component={Dashboard}/>
 
           <Route exact path="/">
             <Home/>
